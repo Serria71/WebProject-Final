@@ -1,0 +1,294 @@
+/*
+Title: main.css
+Name: Justin Dennis
+Date: 02/11/2014
+*/
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../fonts/OpenSans-Regular.ttf');
+}
+html {
+    background-image: url("../images/background.jpg");
+}
+html * {
+   font-family: Open Sans;
+	font-size: 16px;
+}
+* {
+    margin: 0;
+	padding: 0;
+}
+body {
+	background: lightgrey;
+}
+section {
+	margin-top: 50px;
+	margin-right: auto;
+	margin-left: auto;
+	padding-top: 10px;
+}
+header {
+	border-bottom: 2px solid black;
+	margin: 0px 0px 0px 0px;
+	text-align: center;
+}
+header {
+	background: -webkit-linear-gradient(right, #27408B, #E3E3E3); /* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(right, #27408B, #E3E3E3); /* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(right, #27408B, #E3E3E3); /* For Firefox 3.6 to 15 */
+	background: linear-gradient(right, #27408B, #E3E3E3); /* Standard syntax */
+}
+header h1 {
+	margin: 0px 0px 0px 0px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+.title {
+	text-align: center;
+	font-size: 40px;
+}
+.navbar-default .navbar-nav .open a, .navbar-default .navbar-nav .open a:focus, .navbar-default .navbar-nav .open a:hover {
+	background-color: transparent;
+}
+.navbar-brand {
+	padding: 0px 0px;
+}
+.navbar-default {
+	color: black;
+}
+.navbar-default {
+	background-color: grey;
+}
+.nav li {
+	margin-bottom: 5px;
+	margin-top: 5px;
+}
+.nav a:hover{
+	background-color: transparent;
+}
+.nav a:focus {
+	background-color: transparent;
+}
+.nav a:active {
+	background-color: #27408B;
+}
+.nav li a {
+	display: inline;
+	margin: auto;
+	padding: 0px 0px 0px 0px;
+	color: black;
+}
+.nav li a:hover{
+	background-color: transparent;
+}
+.nav li a:focus {
+	background-color: transparent;
+}
+.input-group {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+.dropdown-menu {
+	box-shadow: none;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	min-width: 152px;
+	background-color: transparent;
+	border: none;
+}
+.dropdown-menu li a {
+	width: 50px;
+	padding: 15px 15px 15px 15px;
+	margin: 5px 5px 5px 5px;
+}
+.dropdown-menu li {
+	border: none;
+	border-radius: 0px 0px 0px 0px;
+	display: block;
+	text-align: center;
+	border: 2px solid black;
+	border-radius: 2px 2px 2px 2px;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	margin-left: 0px;
+	margin-right: 0px;
+}
+.dropdown-menu {	
+	margin-top: 5px;
+}
+input, select {
+    margin-left: 0.5em;
+    margin-bottom: 0.5em;
+}
+label {
+    float: left;
+	width: 95px;
+    text-align: right;
+}
+input:required {
+	border: 1px solid darkred;
+}
+input:invalid {
+	border: 1px solid red;
+}
+#submit { 
+    width: 10em;
+	background-color: #27408B;
+	color: #E3E3E3;
+	border: 1px black solid;
+	border-radius: 5px 5px 5px 5px;
+	margin-left: 101px;
+}
+#submit2 {
+	width: 5em;
+	background-color: #27408B;
+	color: #E3E3E3;
+	border: 1px black solid;
+	border-radius: 5px 5px 5px 5px;
+	margin-left: 101px;
+}
+nav {
+	clear: left;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+}
+.jumbotron {
+	text-align: center;
+	height: 800px;
+}
+.dropdown-menu {
+	border-left: 2px solid black;
+	border-right: 2px solid black;
+	border-top: 2px solid black;
+	border-radius: 5px 5px 5px 5px;
+	box-shadow: none;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	min-width: 152px;
+}
+.dropdown-menu li a {
+	width: 50px;
+	padding: 15px 15px 15px 15px;
+	margin: 5px 5px 5px 5px;
+}
+.dropdown-menu li {
+	border: none;
+	border-radius: 0px 0px 0px 0px;
+	display: block;
+	text-align: center;
+	border-bottom: 2px solid black;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	margin-left: 0px;
+	margin-right: 0px;
+}
+.dropdown-menu {	
+	margin-top: 5px;
+}
+nav ul {
+	margin-left: 0;
+	margin-bottom: .5em;
+	list-style: none;
+	padding: .5em 2em 0 0;
+}
+nav li {
+	display: inline;
+	padding: 0 1.5em;
+	font-weight: bold;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	border: 2px solid black;
+	border-radius: 5px 5px 5px 5px;
+	background-color: #27408B;
+	padding-left: 5px;
+	padding-right: 5px;
+	margin-left: 2px;
+	margin-right: 2px;
+}
+caption {
+    text-align: center;
+	font-size: 200%;
+	font-weight: bold;
+	padding-bottom: .5em;
+}
+td {
+    padding: .25em;
+	padding-right: 1em;
+}
+th {
+    color: grey;
+    padding .25em;
+}
+.products{
+	text-align: center;
+	width: 250px;
+	padding-left: 10px;
+	padding-right: 10px;
+	border: 2px solid black;
+	border-radius: 5px 5px 5px 5px;
+	margin: 5px 5px 5px 5px;
+	padding: 2px 2px 2px 2px;	
+}
+
+.products img {
+	padding-bottom: 5px;
+	border-radius: 10px 10px 10px 10px;
+}
+.products div {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	font-weight: bold;
+}
+.products #productTitle {
+	margin: 0 0 0;
+	font-size: 17px;
+	padding-left: 5px;
+	padding-right: 5px;
+	font-weight: normal;
+}
+.products a {
+	color: black;
+}
+.products a:hover {
+	color: #8C8C8C;
+}
+.products button {
+	background-color: #27408B;
+	color: #E3E3E3;
+}
+a {
+    color: #E3E3E3;
+}
+a:hover {
+    color: white;
+}
+a:focus {
+    color: white;
+}
+li {
+    line-height: 1.4em;
+}
+footer {
+	border-top: 2px solid black;
+	font-size: 80%;
+	text-align: center;
+	clear: both;
+	background: -webkit-linear-gradient(right, #E3E3E3, #27408B); /* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(right, #E3E3E3, #27408B); /* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(right, #E3E3E3, #27408B); /* For Firefox 3.6 to 15 */
+	background: linear-gradient(right, #E3E3E3, #27408B); /* Standard syntax */
+	width: 100%;
+}
+footer p {
+    padding-top: 1em;
+	padding-bottom: 1em;
+	margin: 0px 0px 0px 0px;
+}
+
+
+

@@ -1,0 +1,139 @@
+<?php
+	session_start();
+?>	
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Account</title>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<!-- Latest compiled JavaScript -->
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>	
+	<link rel="stylesheet" href="css/sign-up.css">
+	<link rel="shortcut icon" href="images/favicon.ico">
+	
+</head>
+<?php
+	$link = mysqli_connect("mysql7.000webhost.com", "a5972331_2015", "lo68ko90", "a5972331_2016");
+	if($link === false){
+		die("ERROR: Could not connect. " . mysqli_connect_error());
+	}
+	if(isset($_POST['submit'])){
+	
+		$shipping_address = mysqli_escape_string($link, $_POST['address']);
+		$country = mysqli_escape_string($link, $_POST['country']);
+		$city = mysqli_escape_string($link, $_POST['city']);
+		$postal_code = mysqli_escape_string($link, $_POST['postal_code']);
+		
+		$email = $_SESSION['email'];
+		
+		$sql = "SELECT account_name FROM account WHERE email='$email';";
+		$result= mysqli_query($link, $sql);
+		$row = mysqli_fetch_array($result);
+		
+		$account_name = $row[0];
+				
+		$sql1 = "SELECT cust_id FROM customer WHERE account_name='$account_name';";
+		$result1 = mysqli_query($link, $sql1);
+		$row1 = mysqli_fetch_array($result1);
+		
+		$cust_id = $row1[0];
+			
+		if (preg_match('^[ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1} *\d{1}[A-Z]{1}\d{1}$^', $postal_code)){
+				
+				$sql = "INSERT INTO shipping (shipping_address, country, city, postal_code, cust_id)
+				VALUES ('$shipping_address', '$country', '$city', '$postal_code', '$cust_id');";
+				
+				printf("error: %s\n", mysqli_error($link));
+				
+				mysqli_query($link, $sql);
+				header("Location: account.html");
+				mysqli_close($link);
+		} 	
+	}
+?>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		 <div id="divContainer" class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarContent">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand navbar-left" href="#">
+					AmiHobbi
+				</a>
+			</div>
+				<div id="navbarContent" class="collapse navbar-collapse">
+					<ul class="nav navbar-nav navbar-right">
+						<li class=""><a href="index.html">Home</a></li>
+						<li><a href="about.html">About</a></li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">All Products <span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="products/index.html">All Products</a></li>
+								<li><a href="placeholder.html">Nendodroids</a></li>
+								<li><a href="placeholder.html">Figurines</a></li>
+								<li><a href="placeholder.html">T-shirts</a></li>
+								<li><a href="placeholder.html">Anime DVDs</a></li> 
+								<li><a href="placeholder.html">Manga</a></li> 
+								<li><a href="placeholder.html">Novels</a></li> 
+								<li><a href="placeholder.html">Others</a></li>
+							</ul>
+						</li>
+						<?php
+						if (isset($_SESSION['email'])){
+							printf("<li><a href=\"account.html\"><span class=\"glyphicon glyphicon-user\"></span> Account</a></li>");
+						} else {
+							printf("<li><a href=\"sign-up.html\"><span class=\"glyphicon glyphicon-user\"></span> Sign Up</a></li>");
+						}															
+						if (isset($_SESSION['email'])){
+							printf("<li><a href=\"php/log-out.php\"><span class=\"glyphicon glyphicon-log-out\"></span> Logout</a></li>");
+						} else {
+							printf("<li><a href=\"log-in.html\"><span class=\"glyphicon glyphicon-log-in\"></span> Login</a></li>");
+						}
+						?>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<section>
+			<div id="divContainer" class="container">
+				
+					<h3>Please enter the following information: </h3>
+					<form action="shipping-enter.html" method="POST">
+						<div class="input-group">
+							<span class="input-group-addon" id="basic-addon1">Address:</span>
+							<input class="form-control" type="text" name="address" id="address" aria-describedby="basic-addon1" autofocus required><br>
+						</div>
+						<div class="input-group">
+							<span class="input-group-addon" id="basic-addon1">Country:</span>
+							<input class="form-control" type="text" name="country" id="country" aria-describedby="basic-addon1" required><br>
+						</div>
+						<div class="input-group">
+							<span class="input-group-addon" id="basic-addon1">City:</span>
+							<input class="form-control" type="text" name="city" id="city" aria-describedby="basic-addon1" required><br>
+						</div>
+						<div class="input-group">
+							<span class="input-group-addon" id="basic-addon1">Postal Code:</span>
+							<input class="form-control" type="text" name="postal_code" id="postal_code" aria-describedby="basic-addon1" required><br>
+						</div>
+						<div class="input-group">
+							<input class="form-control" type="submit" id="submit" value="Submit" name="submit">
+						</div>
+					</form>
+			</div>
+		</section>
+	<footer>
+		<p>&copy; 2015 Justin Dennis, Braeden Joseph & Nimkii Walker</p>
+	</footer>
+	
+</body>
+</html>

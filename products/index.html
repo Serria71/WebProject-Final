@@ -1,0 +1,151 @@
+<?php
+	session_start();
+?>	
+<!DOCTYPE html>
+<html lang="en">
+<head>	
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Products</title>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<!-- Latest compiled JavaScript -->
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>	
+	<link rel="stylesheet" href="../css/product-page.css">
+	<link rel="shortcut icon" href="../images/favicon.ico">
+	
+</head>
+<?php
+	$link = mysqli_connect("mysql7.000webhost.com", "a5972331_2015", "lo68ko90", "a5972331_2016");
+	if(isset($_GET['action']) && $_GET['action']=="add"){
+		
+		$id = intval($_GET['id']);
+		
+		if(isset($_SESSION['cart'][$id])){
+			$_SESSION['cart'][$id]['quantity']++;
+		} else {
+			$sql_s = "SELECT * FROM item WHERE item_num='$id';";
+			$result_s = mysqli_query($link, $sql_s);
+			
+			if (mysqli_num_rows($result_s)!=0){
+				$row_s = mysqli_fetch_array($result_s);
+				
+				$_SESSION['cart'][$row_s['item_num']]= array("quantity" => 1, "price" => $row_s['price']);
+			}		
+		}
+	}
+	if(isset($_GET['action']) && $_GET['action']=="modal"){
+		
+		$id = intval($_GET['id']);
+		
+		$sql_ss = "SELECT * FROM item WHERE item_num='$id';";
+		$result_ss = mysqli_query($link, $sql_ss);
+		$row_ss = mysqli_fetch_array($result_ss);
+		
+		printf ("<div id=\"product%smodal\" class=\"modal fade bs-example-modal-lg\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myLargeModalLabel\">", $row_ss[0]);
+		printf ("<div class=\"modal-dialog modal-lg\">");
+		printf ("<div class=\"modal-content\">");
+		printf ("<div class=\"modal-header\">");
+		printf ("<h3>%s</h3>", $row_ss[1]);
+		printf ("</div>");
+		printf ("<div class=\"modal-body\">");
+		printf ("<img id=\"image\" src=\"%s\" width=\"300\" height=\"300\" alt=\"\">", $row_ss[7]);
+		printf ("<p>%s</p>", $row_ss[2]);
+		printf ("<p>Price: $%s <sub>(Before Tax)</sub></p>", $row_ss[3]);
+		printf ("<a href=\"index.html?action=add&id=%s\" <button class=\"btn btn-default\">Add to Cart</button></a>", $row_ss[0]);
+		printf ("</div>");
+		printf ("<div class=\"modal-footer\">");
+        printf ("<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>");
+		printf ("</div>");
+		printf ("</div>");
+		printf ("</div>");
+		printf ("</div>");
+		
+		printf ("<script type='text/javascript'>
+				$(document).ready(function(){
+					$('#product%smodal').modal('show');
+				});
+			</script>", $row_ss[0]);
+	}
+?>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		 <div id="divContainer" class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarContent">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand navbar-left" href="../index.html">
+					<img src="../images/logo.png" height="45" width="77">
+				</a>
+			</div>
+			<div id="navbarContent" class="collapse navbar-collapse">
+				<ul class="nav navbar-nav navbar-right">
+					<li class=""><a href="../index.html">Home</a></li>
+					<li><a href="../about.html">About</a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">All Products <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="index.html">All Products</a></li>
+							<li><a href="../placeholder.html">Nendodroids</a></li>
+							<li><a href="../placeholder.html">Figurines</a></li>
+							<li><a href="../placeholder.html">T-shirts</a></li>
+							<li><a href="../placeholder.html">Anime DVDs</a></li> 
+							<li><a href="../placeholder.html">Manga</a></li> 
+							<li><a href="../placeholder.html">Novels</a></li> 
+							<li><a href="../placeholder.html">Others</a></li>
+						</ul>
+					</li>
+						<?php
+						if (isset($_SESSION['email'])){
+							printf("<li><a href=\"../cart.html\"><span class=\"glyphicon glyphicon-shopping-cart\"></span> Cart</a></li>");
+						}
+						if (isset($_SESSION['email'])){
+							printf("<li><a href=\"../account.html\"><span class=\"glyphicon glyphicon-user\"></span> Account</a></li>");
+						} else {
+							printf("<li><a href=\"../sign-up.html\"><span class=\"glyphicon glyphicon-user\"></span> Sign Up</a></li>");
+						}															
+						if (isset($_SESSION['email'])){
+							printf("<li><a href=\"../php/log-out.php\"><span class=\"glyphicon glyphicon-log-out\"></span> Logout</a></li>");
+						} else {
+							printf("<li><a href=\"../log-in.html\"><span class=\"glyphicon glyphicon-log-in\"></span> Login</a></li>");
+						}
+						?>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<section>
+		<div id="divContainer" class="container">			
+			<?php
+				$link = mysqli_connect("mysql7.000webhost.com", "a5972331_2015", "lo68ko90", "a5972331_2016");
+				$sql = "SELECT item_num, price, item_name, product_pic FROM item";
+				if($result = mysqli_query($link, $sql)){
+					printf ("<div class=\"row\">");
+					while ($row = mysqli_fetch_row($result)){						
+						printf ("<div class=\"col-xs-6 col-sm-6 col-md-6 products\">");							
+						printf ("<div><p id=\"productTitle\">%s</p></div>", $row[2]);						
+						printf ("<img id=\"image\" src=\"%s\" width=\"200\" height=\"200\" alt=\"\">", $row[3]);
+						printf ("<div>Price: $%d.00</div>", $row[1]);
+						printf ("<a href=\"index.html?action=add&id=%s\" <button class=\"btn btn-default\">Add to Cart</button></a>", $row[0]);
+						printf ("<a href=\"index.html?action=modal&id=%s\" <button class=\"btn btn-default\"> View Product</button></a>", $row[0]);
+						printf ("</div>");										
+					}
+					printf ("</div>");
+					mysqli_free_result($result);					
+				}
+				mysqli_close($link);
+			?>
+		</div>
+	</section>
+	<footer>
+		<p>&copy; 2015 Justin Dennis, Braeden Joseph & Nimkii Walker</p>
+	</footer>	
+</body>
+</html>

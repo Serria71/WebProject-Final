@@ -1,0 +1,88 @@
+<?php
+	session_start();
+?>	
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="utf-8" />
+	<title></title>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<!-- Latest compiled JavaScript -->
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>	
+	<link rel="stylesheet" href="css/summary.css">
+	<link rel="shortcut icon" href="images/favicon.ico">
+	
+</head>
+
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		 <div id="divContainer" class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarContent">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand navbar-left" href="index.html">
+					<img src="images/logo.png" height="45" width="77">
+				</a>
+			</div>
+				<div id="navbarContent" class="collapse navbar-collapse">
+					<ul class="nav navbar-nav navbar-right">
+						<li class=""><a href="index.html">Home</a></li>
+						<li><a href="about.html">About</a></li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">All Products <span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="products/index.html">All Products</a></li>
+								<li><a href="placeholder.html">Nendodroids</a></li>
+								<li><a href="placeholder.html">Figurines</a></li>
+								<li><a href="placeholder.html">T-shirts</a></li>
+								<li><a href="placeholder.html">Anime DVDs</a></li> 
+								<li><a href="placeholder.html">Manga</a></li> 
+								<li><a href="placeholder.html">Novels</a></li> 
+								<li><a href="placeholder.html">Others</a></li>
+							</ul>
+						</li>
+						<?php
+						if (isset($_SESSION['email'])){
+							printf("<li><a href=\"cart.html\"><span class=\"glyphicon glyphicon-shopping-cart\"></span> Cart</a></li>");
+						}
+						if (isset($_SESSION['email'])){
+							printf("<li><a href=\"account.html\"><span class=\"glyphicon glyphicon-user\"></span> Account</a></li>");
+						} else {
+							printf("<li><a href=\"sign-up.html\"><span class=\"glyphicon glyphicon-user\"></span> Sign Up</a></li>");
+						}															
+						if (isset($_SESSION['email'])){
+							printf("<li><a href=\"php/log-out.php\"><span class=\"glyphicon glyphicon-log-out\"></span> Logout</a></li>");
+						} else {
+							printf("<li><a href=\"log-in.html\"><span class=\"glyphicon glyphicon-log-in\"></span> Login</a></li>");
+						}
+						?>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	<section>
+		<div id="divContainer" class="container">
+			<h2>Welcome to AmiHobbi a hobby shop for all you're Anime/Manga needs.</h2>
+			<p>This website sells and ships many Anime and Manga related products and ships them all over the world.</p>
+			<p>You can browse and purchase your favourite Anime and Manga figurines, figures and nendoroid!</p>
+			<h2>We strive to bring customers a great service and are committed to doing so.</h2>		
+			<h3>My guarantee</h3>
+			<p>If you aren't completely satisfied with any product you buy from our site, you can return it for a full refund. <b>No questions asked!</b></p>
+			<P>Created by Justin Dennis, Braeden Joseph and Nimkii Walker.</p>
+		</div>
+	</section>
+	<footer>
+		<p>&copy; 2015 Justin Dennis, Braeden Joseph & Nimkii Walker</p>
+	</footer>
+	
+</body>
+</html>

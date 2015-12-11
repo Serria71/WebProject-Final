@@ -1,0 +1,180 @@
+<?php
+	session_start();
+	
+	if(isset($_POST['submit'])){ 
+		foreach($_POST['quantity'] as $key => $val) { 
+			if($val==0) { 
+				unset($_SESSION['cart'][$key]); 
+			}else{ 
+				$_SESSION['cart'][$key]['quantity']=$val; 
+			} 
+		}	  
+	}
+	if(isset($_POST['checkout'])){
+		$link = mysqli_connect("mysql7.000webhost.com", "a5972331_2015", "lo68ko90", "a5972331_2016");
+		
+		$order_total = $_POST['total'];
+	
+		$email = $_SESSION['email'];
+	
+		$sql1 = "SELECT account_name FROM account WHERE email='$email';";
+		$result1 = mysqli_query($link, $sql1);
+		$row1 = mysqli_fetch_array($result1);
+		
+		$account_name = $row1[0];
+		
+		$sql2 = "SELECT cust_id FROM customer WHERE account_name='$account_name';";
+		$result2 = mysqli_query($link, $sql2);
+		$row2 = mysqli_fetch_array($result2);
+		
+		$cust_id = $row2[0];
+		
+		$sql3 = "SELECT shipping_address FROM shipping WHERE cust_id='$cust_id';";
+		$result3 = mysqli_query($link, $sql3);
+		$row3 = mysqli_fetch_array($result3);
+		
+		$shipping_address = $row3[0];
+			
+		$sql = "INSERT INTO orders (total, shipping_address, cust_id)
+			VALUES ('$order_total', '$shipping_address', '$cust_id');";
+			
+		mysqli_query($link, $sql);
+		unset($_SESSION['cart']);
+		mysqli_close($link);	 
+	}
+	if(isset($_POST['clear'])){
+		unset($_SESSION['cart']);
+	}
+?>	
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Cart</title>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<!-- Latest compiled JavaScript -->
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>	
+	<link rel="stylesheet" href="css/cart.css">
+	<link rel="stylesheet" href="css/pgwslider.css">
+	<link rel="shortcut icon" href="images/favicon.ico">
+</head>
+
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		 <div id="divContainer" class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarContent">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand navbar-left" href="index.html">
+					<img src="images/logo.png" height="45" width="77">
+				</a>
+			</div>
+				<div id="navbarContent" class="collapse navbar-collapse">
+					<ul class="nav navbar-nav navbar-right">
+						<li class=""><a href="index.html">Home</a></li>
+						<li><a href="about.html">About</a></li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">All Products <span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="products/index.html">All Products</a></li>
+								<li><a href="placeholder.html">Nendodroids</a></li>
+								<li><a href="placeholder.html">Figurines</a></li>
+								<li><a href="placeholder.html">T-shirts</a></li>
+								<li><a href="placeholder.html">Anime DVDs</a></li> 
+								<li><a href="placeholder.html">Manga</a></li> 
+								<li><a href="placeholder.html">Novels</a></li> 
+								<li><a href="placeholder.html">Others</a></li>
+							</ul>
+						</li>
+						<?php
+						if (isset($_SESSION['email'])){
+							printf("<li><a href=\"cart.html\"><span class=\"glyphicon glyphicon-shopping-cart\"></span> Cart</a></li>");
+						}
+						if (isset($_SESSION['email'])){
+							printf("<li><a href=\"account.html\"><span class=\"glyphicon glyphicon-user\"></span> Account</a></li>");
+						} else {
+							printf("<li><a href=\"sign-up.html\"><span class=\"glyphicon glyphicon-user\"></span> Sign Up</a></li>");
+						}															
+						if (isset($_SESSION['email'])){
+							printf("<li><a href=\"php/log-out.php\"><span class=\"glyphicon glyphicon-log-out\"></span> Logout</a></li>");
+						} else {
+							printf("<li><a href=\"log-in.html\"><span class=\"glyphicon glyphicon-log-in\"></span> Login</a></li>");
+						}
+						?>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<section>
+			<div id="divContainer" class="container">									
+				<?php
+				$link = mysqli_connect("mysql7.000webhost.com", "a5972331_2015", "lo68ko90", "a5972331_2016");
+				if (empty($_SESSION['cart'])){
+					printf("<h3>There is no items in your cart!</h3>");
+					printf("<a href=\"products/index.html\"><h3>Go here to add some items!</h3></a>");
+				}	
+				else {
+				?>
+				<form method="post">
+					<table>
+						<tr>
+							<th>Name</th>
+							<th>Quantity</th>
+							<th>Price</th>
+							<th>Item Price</th>
+						</tr>
+					<?php
+					$sql = "SELECT * FROM item WHERE item_num IN (";
+								
+					foreach($_SESSION['cart'] as $id => $value){
+						$sql.=$id.",";
+					}
+								
+					$sql = substr($sql, 0 , -1).");";
+					$result = mysqli_query($link, $sql);
+					$totalprice=0;
+					while($row = mysqli_fetch_array($result)){
+						$subtotal=$_SESSION['cart'][$row['item_num']]['quantity']*$row['price'];
+						$totalprice+=$subtotal;
+						?>
+						<tr>
+							<td><?php echo $row[1] ?></td>
+							<td><input type="text" name="quantity[<?php echo $row[0] ?>]" size="5" value="<?php echo $_SESSION['cart'][$row['item_num']]['quantity'] ?>" /></td>
+							<td>$<?php echo $row[3] ?></td>
+							<td>$<?php echo $_SESSION['cart'][$row['item_num']]['quantity']*$row['price'] ?></td>
+						</tr>
+					<?php
+					}
+					?>
+						<tr>
+							<td colspan="4">Total Price: $<?php echo $totalprice ?></td>
+						</tr>
+						<tr>
+							<td colspan="4">Total w/ Tax: $<?php echo $totalprice*1.13 ?></td>
+						</tr>
+						<input type="hidden" name="total" value="<?php echo $totalprice*1.13?>"/>
+					</table>
+					<button class="submit" type="submit" name="submit">Update Cart</button>
+					<button class="checkout" type="submit" name="checkout">Checkout</button>
+					<button class="checkout" type="submit" name="clear">Clear Cart</button>
+				</form>
+				<?php
+				}
+				?>						
+			</div>
+		</section>
+	<footer>
+		<p>&copy; 2015 Justin Dennis, Braeden Joseph & Nimkii Walker</p>
+	</footer>
+	
+</body>
+</html>
